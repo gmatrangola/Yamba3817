@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Yamba</string>
+    <string name="action_settings">Settings</string>
+    <string name="messageHint">Message</string>
+    <string name="post">Post</string>
+    <string name="oneforty">140</string>
+
+</resources>
