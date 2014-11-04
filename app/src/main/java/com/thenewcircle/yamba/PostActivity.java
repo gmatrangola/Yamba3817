@@ -32,11 +32,13 @@ public class PostActivity extends Activity {
         messageEditText = (EditText) findViewById(R.id.messageEditText);
         charactersRemainingTextView = (TextView) findViewById(R.id.charactersRemainingTextView);
         postButton = (Button) findViewById(R.id.postButton);
+        String status = getIntent().getStringExtra("status");
+        if(status != null) messageEditText.setText(status);
 
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String status = messageEditText.getText().toString();
+                String status = messageEditText.getText().toString();
                 // post status to service intent
                 Intent postIntent = new Intent(PostActivity.this, YambaPostService.class);
                 postIntent.putExtra(YambaPostService.STATUS, status);
