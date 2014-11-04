@@ -1,6 +1,7 @@
 package com.thenewcircle.yamba;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -35,32 +36,13 @@ public class PostActivity extends Activity {
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final YambaClient client = new YambaClient("student", "password");
-                Runnable postIt = new Runnable() {
-                    @Override
-                    public void run() {
-                        final String status = messageEditText.getText().toString();
-                        try {
-                            try {
-                                Thread.sleep(15000);
-                            } catch (InterruptedException e) {
-                                Log.wtf(TAG, "interrupt");
-                            }
-                            client.postStatus(status);
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    messageEditText.getText().clear();
-                                    charactersRemainingTextView.setText("Sent " + status);
-                                }
-                            });
-                        } catch (YambaClientException e) {
-                            Log.e(TAG, "unable to post " + status, e);
-                        }
-
-                    }
-                };
-                new Thread(postIt).start();
+                final String status = messageEditText.getText().toString();
+                // post status to service intent
+                Intent postIntent = new Intent(PostActivity.this, YambaPostService.class);
+                postIntent.putExtra(YambaPostService.STATUS, status);
+                startService(postIntent);
+                messageEditText.getText().clear();
+                charactersRemainingTextView.setText("Sent " + status);
             }
         });
 
