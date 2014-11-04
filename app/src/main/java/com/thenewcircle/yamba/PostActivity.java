@@ -7,8 +7,13 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.marakana.android.yamba.clientlib.YambaClient;
+import com.marakana.android.yamba.clientlib.YambaClientException;
 
 
 public class PostActivity extends Activity {
@@ -16,6 +21,7 @@ public class PostActivity extends Activity {
     private static final String TAG = "yamba." + PostActivity.class.getSimpleName();
     private EditText messageEditText;
     private TextView charactersRemainingTextView;
+    private Button postButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +29,34 @@ public class PostActivity extends Activity {
         setContentView(R.layout.activity_post);
         messageEditText = (EditText) findViewById(R.id.messageEditText);
         charactersRemainingTextView = (TextView) findViewById(R.id.charactersRemainingTextView);
+        postButton = (Button) findViewById(R.id.postButton);
+
+        postButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final YambaClient client = new YambaClient("student", "password");
+                Runnable postIt = new Runnable() {
+                    @Override
+                    public void run() {
+                        final String status = messageEditText.getText().toString();
+                        try {
+                            client.postStatus(status);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    messageEditText.getText().clear();
+                                    charactersRemainingTextView.setText("Sent " + status);
+                                }
+                            });
+                        } catch (YambaClientException e) {
+                            Log.e(TAG, "unable to post " + status, e);
+                        }
+
+                    }
+                };
+                new Thread(postIt).start();
+            }
+        });
 
         messageEditText.addTextChangedListener(new TextWatcher() {
             @Override
