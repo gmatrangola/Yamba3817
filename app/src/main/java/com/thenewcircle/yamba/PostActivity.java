@@ -25,6 +25,7 @@ public class PostActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
         messageEditText = (EditText) findViewById(R.id.messageEditText);
@@ -40,6 +41,11 @@ public class PostActivity extends Activity {
                     public void run() {
                         final String status = messageEditText.getText().toString();
                         try {
+                            try {
+                                Thread.sleep(15000);
+                            } catch (InterruptedException e) {
+                                Log.wtf(TAG, "interrupt");
+                            }
                             client.postStatus(status);
                             runOnUiThread(new Runnable() {
                                 @Override
@@ -76,8 +82,42 @@ public class PostActivity extends Activity {
                 charactersRemainingTextView.setText((140 - len) + "");
             }
         });
+        if(savedInstanceState != null) {
+            String count = savedInstanceState.getString("count");
+            if(count != null) charactersRemainingTextView.setText(count);
+        }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d(TAG, "onSaveInstanceState");
+        outState.putString("count", charactersRemainingTextView.getText().toString());
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d(TAG, "onResume()");
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d(TAG, "onPause");
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(TAG, "onStop");
+        super.onStop();
+    }
+
+    @Override
+    protected void onStart() {
+        Log.d(TAG, "onStart()");
+        super.onStart();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
