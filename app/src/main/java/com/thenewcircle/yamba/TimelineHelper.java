@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import static com.thenewcircle.instructoryamba.TimelineContract.Columns.*;
+import static com.thenewcircle.yamba.TimelineContract.Columns.*;
 
 /**
  * Created by geoff on 5/21/14.
