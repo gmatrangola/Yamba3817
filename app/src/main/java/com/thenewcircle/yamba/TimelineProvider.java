@@ -1,11 +1,15 @@
 package com.thenewcircle.yamba;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
+
+import java.util.IllegalFormatCodePointException;
 
 public class TimelineProvider extends ContentProvider {
 
@@ -37,7 +41,21 @@ public class TimelineProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         Log.d(TAG, "insert " + uri + " values: " + values);
-        throw new UnsupportedOperationException("Not yet implemented");
+        if(URI_MATCHER.match(uri) != STATUS_DIR) {
+            throw new IllegalArgumentException("Unsupported URI: " + uri);
+        }
+
+        SQLiteDatabase db = timelineHelper.getWritableDatabase();
+
+        long rowId = db.insert(TimelineHelper.TABLE, null, values);
+        Uri result = null;
+
+        if(rowId >= 0) {
+            result = ContentUris.withAppendedId(TimelineContract.CONTENT_URI, rowId);
+            Log.d(TAG, "result = " + result);
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return result;
     }
 
     @Override

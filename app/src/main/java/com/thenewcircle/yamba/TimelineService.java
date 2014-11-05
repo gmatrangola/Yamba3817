@@ -4,13 +4,17 @@ import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.marakana.android.yamba.clientlib.YambaClient;
 import com.marakana.android.yamba.clientlib.YambaClientException;
+import static com.thenewcircle.yamba.TimelineContract.Columns.*;
 
 import java.util.List;
 
@@ -48,8 +52,17 @@ public class TimelineService extends IntentService {
             final YambaClient client = new YambaClient(username, password);
             try {
                 List<YambaClient.Status> posts = client.getTimeline(30);
+                ContentResolver resolver = getContentResolver();
+                ContentValues values = new ContentValues();
                 for(YambaClient.Status post : posts) {
-                    Log.i(TAG, "Message: " + post.getMessage() + " User:" + post.getUser());
+                    values.put(ID, post.getId());
+                    values.put(MESSAGE, post.getMessage());
+                    values.put(TIME_CREATED, post.getCreatedAt().getTime());
+                    values.put(USER, post.getUser());
+                    Uri uri = resolver.insert(TimelineContract.CONTENT_URI, values);
+                    Log.i(TAG, "Message: " + post.getMessage() + " User:" + post.getUser() +
+                            " Uri: " + uri);
+
                 }
             } catch (YambaClientException e) {
                 Log.e(TAG, "unable to get posts");

@@ -118,10 +118,15 @@ public class PostActivity extends Activity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Intent preferencesIntent = new Intent(this, SettingsActivity.class);
-            startActivity(preferencesIntent);
-            return true;
+        switch (id) {
+            case R.id.action_settings:
+                Intent preferencesIntent = new Intent(this, SettingsActivity.class);
+                startActivity(preferencesIntent);
+                return true;
+            case R.id.refresh:
+                Intent refreshIntent = new Intent(this, TimelineService.class);
+                startService(refreshIntent);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

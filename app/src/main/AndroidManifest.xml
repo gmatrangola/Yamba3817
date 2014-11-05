@@ -24,6 +24,9 @@
             android:exported="false" >
         </service>
         <service android:name="com.thenewcircle.yamba.TimelineService" android:exported="false"/>
+        <provider
+            android:authorities="com.thenewcircle.yamba.provider"
+            android:name="com.thenewcircle.yamba.TimelineProvider" />
     </application>
 
 </manifest>
