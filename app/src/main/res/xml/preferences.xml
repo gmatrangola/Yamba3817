@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <EditTextPreference android:title="User Name" android:key="userName"/>
-    <EditTextPreference android:title="Password" android:key="password" android:inputType="textPassword" />
+    <EditTextPreference android:title="User Name" android:key="userName"
+        android:defaultValue="student"/>
+    <EditTextPreference android:title="Password" android:key="password"
+        android:inputType="textPassword" />
+    <EditTextPreference android:title="Refresh Rate" android:key="refreshRate"
+        android:defaultValue="5" android:inputType="number"/>
 </PreferenceScreen>
