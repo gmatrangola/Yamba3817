@@ -62,7 +62,6 @@ public class TimelineService extends IntentService {
                     Uri uri = resolver.insert(TimelineContract.CONTENT_URI, values);
                     Log.i(TAG, "Message: " + post.getMessage() + " User:" + post.getUser() +
                             " Uri: " + uri);
-
                 }
             } catch (YambaClientException e) {
                 Log.e(TAG, "unable to get posts");
