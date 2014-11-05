@@ -42,7 +42,7 @@ public class YambaPostService extends IntentService {
         String password = prefs.getString("password", null);
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        if(username == null || password == null) {
+        if(username == null || password == null || username.length() ==0 || password.length() == 0) {
             builder.setContentText("No username/password. Press here.");
             builder.setAutoCancel(true);
             Intent settingsActivity = new Intent(this, SettingsActivity.class);

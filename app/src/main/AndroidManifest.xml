@@ -4,6 +4,7 @@
 
     <application
         android:allowBackup="true"
+        android:name="com.thenewcircle.yamba.YambaApp"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
@@ -22,6 +23,7 @@
             android:name="com.thenewcircle.yamba.YambaPostService"
             android:exported="false" >
         </service>
+        <service android:name="com.thenewcircle.yamba.TimelineService" android:exported="false"/>
     </application>
 
 </manifest>
