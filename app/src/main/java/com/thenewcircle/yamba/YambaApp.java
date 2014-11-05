@@ -19,7 +19,9 @@ public class YambaApp extends Application {
         Log.d(TAG, "onCreate");
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent timelineStatusIntent = new Intent(this, TimelineService.class);
-        PendingIntent timelineStatusPending = PendingIntent.getService(this, 0, timelineStatusIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 2000, AlarmManager.INTERVAL_FIFTEEN_MINUTES, timelineStatusPending);
+        PendingIntent timelineStatusPending = PendingIntent.getService(this, 0, timelineStatusIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 2000,
+                AlarmManager.INTERVAL_FIFTEEN_MINUTES, timelineStatusPending);
     }
 }
