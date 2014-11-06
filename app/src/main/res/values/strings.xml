@@ -6,5 +6,8 @@
     <string name="messageHint">Message</string>
     <string name="post">Post</string>
     <string name="oneforty">140</string>
+    <string name="title_activity_timeline">TimelineActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
