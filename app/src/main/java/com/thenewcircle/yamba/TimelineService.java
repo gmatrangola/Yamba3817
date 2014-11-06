@@ -63,21 +63,6 @@ public class TimelineService extends IntentService {
 
                 client.fetchFriendsTimeline(new YambaClient.TimelineProcessor() {
                     @Override
-                    public boolean isRunnable() {
-                        return true;
-                    }
-
-                    @Override
-                    public void onStartProcessingTimeline() {
-
-                    }
-
-                    @Override
-                    public void onEndProcessingTimeline() {
-
-                    }
-
-                    @Override
                     public void onTimelineStatus(long id, Date createdAt, String user, String msg) {
                         long createdTime = createdAt.getTime();
                         if(createdTime > maxTime) {
@@ -89,7 +74,16 @@ public class TimelineService extends IntentService {
                             Log.i(TAG, "Message: " + msg + " User:" + user +
                                     " Uri: " + uri);
                         }
-
+                    }
+                    @Override
+                    public boolean isRunnable() {
+                        return true;
+                    }
+                    @Override
+                    public void onStartProcessingTimeline() {
+                    }
+                    @Override
+                    public void onEndProcessingTimeline() {
                     }
                 });
             } catch (YambaClientException e) {
