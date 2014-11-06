@@ -8,6 +8,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -51,17 +52,26 @@ public class TimelineService extends IntentService {
         else {
             final YambaClient client = new YambaClient(username, password);
             try {
-                List<YambaClient.Status> posts = client.getTimeline(30);
                 ContentResolver resolver = getContentResolver();
                 ContentValues values = new ContentValues();
+
+                Cursor c = resolver.query(TimelineContract.CONTENT_URI,
+                        TimelineContract.MAX_TIME_CREATED, null, null, null);
+
+                final long maxTime = c.moveToFirst()?c.getLong(0): Long.MIN_VALUE;
+
+                List<YambaClient.Status> posts = client.getTimeline(30);
                 for(YambaClient.Status post : posts) {
-                    values.put(ID, post.getId());
-                    values.put(MESSAGE, post.getMessage());
-                    values.put(TIME_CREATED, post.getCreatedAt().getTime());
-                    values.put(USER, post.getUser());
-                    Uri uri = resolver.insert(TimelineContract.CONTENT_URI, values);
-                    Log.i(TAG, "Message: " + post.getMessage() + " User:" + post.getUser() +
-                            " Uri: " + uri);
+                    long createdTime = post.getCreatedAt().getTime();
+                    if(createdTime > maxTime) {
+                        values.put(ID, post.getId());
+                        values.put(MESSAGE, post.getMessage());
+                        values.put(TIME_CREATED, createdTime);
+                        values.put(USER, post.getUser());
+                        Uri uri = resolver.insert(TimelineContract.CONTENT_URI, values);
+                        Log.i(TAG, "Message: " + post.getMessage() + " User:" + post.getUser() +
+                                " Uri: " + uri);
+                    }
                 }
             } catch (YambaClientException e) {
                 Log.e(TAG, "unable to get posts");
