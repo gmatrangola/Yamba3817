@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 import static com.thenewcircle.yamba.TimelineContract.Columns.*;
@@ -66,5 +67,11 @@ public class TimelineFragment extends ListFragment
     public void onLoaderReset(Loader<Cursor> loader) {
         // called when connection to content provider is lost - should not happen
         adapter.swapCursor(null);
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        TimelineActivity activity = (TimelineActivity) getActivity();
+        activity.updateDetails(id);
     }
 }

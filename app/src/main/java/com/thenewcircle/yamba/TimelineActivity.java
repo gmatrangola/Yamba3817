@@ -12,6 +12,8 @@ import android.widget.FrameLayout;
 
 public class TimelineActivity extends Activity {
 
+    private TimelineDetailsFragment detailsFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +32,14 @@ public class TimelineActivity extends Activity {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction tx = fragmentManager.beginTransaction();
         tx.replace(R.id.fragment_container, timelineFragment);
+        FrameLayout detailsContainer = (FrameLayout) findViewById(R.id.details_container);
+        if(detailsContainer != null) {
+            detailsFragment = new TimelineDetailsFragment();
+            tx.replace(R.id.details_container, detailsFragment, "details");
+        }
+        else {
+            detailsFragment = null;
+        }
         tx.commit();
     }
 
@@ -60,5 +70,9 @@ public class TimelineActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void updateDetails(Long id) {
+        if(detailsFragment != null) detailsFragment.updateView(id);
     }
 }
