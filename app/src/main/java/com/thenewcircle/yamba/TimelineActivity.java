@@ -1,6 +1,7 @@
 package com.thenewcircle.yamba;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -74,5 +75,14 @@ public class TimelineActivity extends Activity {
 
     public void updateDetails(Long id) {
         if(detailsFragment != null) detailsFragment.updateView(id);
+        else {
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            TimelineDetailsFragment details = new TimelineDetailsFragment();
+            ft.replace(R.id.fragment_container, details);
+            details.updateView(id);
+            ft.addToBackStack("details");
+            ft.commit();
+        }
     }
 }

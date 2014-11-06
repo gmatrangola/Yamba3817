@@ -1,5 +1,6 @@
 package com.thenewcircle.yamba;
 
+import android.app.Activity;
 import android.content.ContentUris;
 import android.database.Cursor;
 import android.net.Uri;
@@ -24,6 +25,7 @@ public class TimelineDetailsFragment extends Fragment {
     private TextView userNameText;
     private TextView messageText;
     private TextView createdAtText;
+    private Long messageId;
 
     public TimelineDetailsFragment() {
         // Required empty public constructor
@@ -37,12 +39,33 @@ public class TimelineDetailsFragment extends Fragment {
         userNameText = (TextView) view.findViewById(R.id.userName);
         messageText = (TextView) view.findViewById(R.id.messageDetails);
         createdAtText = (TextView) view.findViewById(R.id.createdAt);
+
+        if(messageId != null)
+        {
+            updateViewWithId(messageId);
+        }
         return view;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        messageId = null;
     }
 
     public void updateView(Long id) {
         Log.d(TAG, "updateView " + id);
         if(id < 0 ) return;
+        Activity activity = getActivity();
+        if(activity != null) {
+            updateViewWithId(id);
+        }
+        else {
+            messageId = id;
+        }
+    }
+
+    private void updateViewWithId(Long id) {
         Uri uri = ContentUris.withAppendedId(TimelineContract.CONTENT_URI, id);
         Log.d(TAG, "uri = " + uri);
         Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
@@ -55,6 +78,5 @@ public class TimelineDetailsFragment extends Fragment {
         userNameText.setText(user);
         messageText.setText(message);
         createdAtText.setText(DateUtils.getRelativeTimeSpanString(createdAt));
-
     }
 }
