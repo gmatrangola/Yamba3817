@@ -2,6 +2,7 @@ package com.thenewcircle.yamba;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -55,6 +56,17 @@ public class PostActivity extends Activity {
             String count = savedInstanceState.getString("count");
             if(count != null) charactersRemainingTextView.setText(count);
         }
+
+        // Get the intent that started this activity and set the text from it
+        Intent intent = getIntent();
+        String msg = intent.getStringExtra("message");
+        if(msg != null) {
+            messageEditText.setText(msg);
+            post();
+            setResult(msg.length());
+            finish();
+        }
+
     }
 
     @Override
@@ -110,16 +122,20 @@ public class PostActivity extends Activity {
                 startActivity(preferencesIntent);
                 return true;
             case R.id.post:
-                String status = messageEditText.getText().toString();
-                // post status to service intent
-                Intent postIntent = new Intent(PostActivity.this, YambaPostService.class);
-                postIntent.putExtra(YambaPostService.STATUS, status);
-                startService(postIntent);
-                messageEditText.getText().clear();
-                charactersRemainingTextView.setText("Sent " + status);
+                post();
             break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void post() {
+        String status = messageEditText.getText().toString();
+        // post status to service intent
+        Intent postIntent = new Intent(PostActivity.this, YambaPostService.class);
+        postIntent.putExtra(YambaPostService.STATUS, status);
+        startService(postIntent);
+        messageEditText.getText().clear();
+        charactersRemainingTextView.setText("Sent " + status);
     }
 }
