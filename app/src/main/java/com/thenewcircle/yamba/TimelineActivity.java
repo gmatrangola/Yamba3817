@@ -45,9 +45,14 @@ public class TimelineActivity extends Activity {
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_post, menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 
@@ -63,10 +68,6 @@ public class TimelineActivity extends Activity {
             case R.id.action_settings:
                 Intent preferencesIntent = new Intent(this, SettingsActivity.class);
                 startActivity(preferencesIntent);
-                return true;
-            case R.id.refresh:
-                Intent refreshIntent = new Intent(this, TimelineService.class);
-                startService(refreshIntent);
                 return true;
         }
 

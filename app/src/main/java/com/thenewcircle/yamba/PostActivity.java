@@ -22,7 +22,6 @@ public class PostActivity extends Activity {
     private static final String TAG = "yamba." + PostActivity.class.getSimpleName();
     private EditText messageEditText;
     private TextView charactersRemainingTextView;
-    private Button postButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,22 +30,8 @@ public class PostActivity extends Activity {
         setContentView(R.layout.activity_post);
         messageEditText = (EditText) findViewById(R.id.messageEditText);
         charactersRemainingTextView = (TextView) findViewById(R.id.charactersRemainingTextView);
-        postButton = (Button) findViewById(R.id.postButton);
         String status = getIntent().getStringExtra("status");
         if(status != null) messageEditText.setText(status);
-
-        postButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String status = messageEditText.getText().toString();
-                // post status to service intent
-                Intent postIntent = new Intent(PostActivity.this, YambaPostService.class);
-                postIntent.putExtra(YambaPostService.STATUS, status);
-                startService(postIntent);
-                messageEditText.getText().clear();
-                charactersRemainingTextView.setText("Sent " + status);
-            }
-        });
 
         messageEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -107,6 +92,7 @@ public class PostActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_post, menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 
@@ -123,10 +109,15 @@ public class PostActivity extends Activity {
                 Intent preferencesIntent = new Intent(this, SettingsActivity.class);
                 startActivity(preferencesIntent);
                 return true;
-            case R.id.refresh:
-                Intent refreshIntent = new Intent(this, TimelineService.class);
-                startService(refreshIntent);
-                return true;
+            case R.id.post:
+                String status = messageEditText.getText().toString();
+                // post status to service intent
+                Intent postIntent = new Intent(PostActivity.this, YambaPostService.class);
+                postIntent.putExtra(YambaPostService.STATUS, status);
+                startService(postIntent);
+                messageEditText.getText().clear();
+                charactersRemainingTextView.setText("Sent " + status);
+            break;
         }
 
         return super.onOptionsItemSelected(item);

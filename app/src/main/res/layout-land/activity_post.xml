@@ -14,18 +14,8 @@
         android:id="@+id/messageEditText"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@+id/postButton"
+        android:layout_toLeftOf="@+id/charactersRemainingTextView"
         android:lines="5" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/post"
-        android:id="@+id/postButton"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="@dimen/activity_vertical_margin" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -33,7 +23,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/oneforty"
         android:id="@+id/charactersRemainingTextView"
-        android:layout_below="@+id/postButton"
+        android:layout_below="@+id/messageEditText"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 </RelativeLayout>

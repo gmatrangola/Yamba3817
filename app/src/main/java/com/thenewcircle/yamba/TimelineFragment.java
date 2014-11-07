@@ -3,11 +3,15 @@ package com.thenewcircle.yamba;
 import android.app.ListFragment;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
@@ -34,8 +38,30 @@ public class TimelineFragment extends ListFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_timeline, container, false);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_timeline, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.refresh:
+                Intent refreshIntent = new Intent(getActivity(), TimelineService.class);
+                getActivity().startService(refreshIntent);
+                return true;
+            case R.id.postActivity:
+                Intent postIntent = new Intent(getActivity(), PostActivity.class);
+                getActivity().startActivity(postIntent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
