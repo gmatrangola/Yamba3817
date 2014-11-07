@@ -38,7 +38,10 @@
 
         <provider
             android:name="com.thenewcircle.yamba.TimelineProvider"
-            android:authorities="com.thenewcircle.yamba.provider" />
+            android:authorities="com.thenewcircle.yamba.provider"
+            android:exported="true">
+            <path-permission android:readPermission="yambaRead"/>
+            </provider>
 
         <receiver android:name="com.thenewcircle.yamba.OnBoot">
             <intent-filter>
